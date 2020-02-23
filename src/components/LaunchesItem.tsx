@@ -16,7 +16,7 @@ const LaunchesItem: React.FC<Props> = props => {
     <IonCard
       button
       className={styles.card}
-      routerLink={`/missions/${launch.id}`}
+      routerLink={`/launches/${launch.id}`}
       routerDirection="forward"
     >
       <IonImg

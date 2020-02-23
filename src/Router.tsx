@@ -4,22 +4,22 @@ import { IonReactRouter } from '@ionic/react-router'
 import { IonRouterOutlet } from '@ionic/react'
 import { Redirect, Route } from 'react-router-dom'
 
-import Missions from './pages/Missions'
-import Mission from './pages/Mission'
+import LaunchesPage from './pages/LaunchesPage'
+import LaunchPage from './pages/LaunchPage'
 
 const Router: React.FC = () => (
   <IonReactRouter>
     <IonRouterOutlet>
-      <Route path="/missions" exact>
-        <Missions />
+      <Route path="/launches" exact>
+        <LaunchesPage />
       </Route>
 
-      <Route path="/missions/:id" exact>
-        <Mission />
+      <Route path="/launches/:id" exact>
+        <LaunchPage />
       </Route>
 
       <Route path="/" exact>
-        <Redirect to="/missions" />
+        <Redirect to="/launches" />
       </Route>
     </IonRouterOutlet>
   </IonReactRouter>
