@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { useLaunchesPastQuery, Launch } from '../generated/graphql'
 import LaunchesItem from './LaunchesItem'
-import { IonButton } from '@ionic/react'
+import { IonButton, IonGrid, IonRow, IonCol, IonLoading } from '@ionic/react'
+import Error from './Error'
 
 const Launches: React.FC = () => {
-  const { data, loading, fetchMore } = useLaunchesPastQuery({
+  const { data, loading, error, fetchMore } = useLaunchesPastQuery({
     variables: { limit: 12, offset: 0 },
   })
 
@@ -41,22 +42,35 @@ const Launches: React.FC = () => {
     }
   }, [fetchMore, offset, limit])
 
+  if (loading) {
+    return <IonLoading isOpen={loading} message="Loading..." />
+  }
+
+  if (error) {
+    return <Error error={error} />
+  }
+
   return (
-    <React.Fragment>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        data &&
-        data.launchesPast.map(launch => (
-          <LaunchesItem key={launch.id} launch={launch as Launch} />
-        ))
-      )}
+    <IonGrid fixed>
+      <IonRow>
+        {data &&
+          data.launchesPast.map(launch => (
+            <IonCol key={launch.id} size="12" sizeSm="6" sizeLg="4">
+              <LaunchesItem launch={launch as Launch} />
+            </IonCol>
+          ))}
+      </IonRow>
+
       {!loading && !finished ? (
-        <IonButton expand="block" onClick={handleLoadMore}>
-          Load More...
-        </IonButton>
+        <IonRow>
+          <IonCol>
+            <IonButton expand="block" onClick={handleLoadMore}>
+              Load More...
+            </IonButton>
+          </IonCol>
+        </IonRow>
       ) : null}
-    </React.Fragment>
+    </IonGrid>
   )
 }
 

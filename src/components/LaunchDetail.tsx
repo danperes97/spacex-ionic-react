@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Launch } from '../generated/graphql'
 import {
   IonCard,
@@ -13,6 +13,8 @@ import {
   IonThumbnail,
 } from '@ionic/react'
 import { checkmark, close } from 'ionicons/icons'
+import { format } from 'date-fns'
+
 import styles from './LaunchDetail.module.scss'
 import noPhoto from '../assets/images/no-photo.svg'
 
@@ -23,6 +25,9 @@ interface Props {
 
 const LaunchDetail: React.FC<Props> = props => {
   const { launch, onSelectImage = () => null } = props
+  const date = useMemo(() => {
+    return format(new Date(launch.launch_date_utc), 'dd-MM-yyyy HH:mm:ss')
+  }, [launch.launch_date_utc])
 
   return (
     <IonCard>
@@ -33,7 +38,9 @@ const LaunchDetail: React.FC<Props> = props => {
 
         <IonText color="dark">
           <h2 className="ion-no-padding">{launch.mission_name}</h2>
-          <p className="ion-no-padding">{launch.rocket.rocket_name}</p>
+          <p className="ion-no-padding">
+            {launch.rocket.rocket_name} | {date}
+          </p>
         </IonText>
         <IonIcon
           slot="end"
